@@ -83,6 +83,8 @@ DisplayMessage PROC
 L2:
     mov al,buffer[esi]   ; display the buffer
     call    WriteHex
+    mov  al,' '
+    call WriteChar
     inc esi
     loop L2
 
@@ -98,12 +100,12 @@ DealKey PROC
     mov ecx,bufSize     ; loop counter
     mov esi,0           ; index 0 in buffer
     mov edi,keySize
+    sub ecx,keySize
 L1: 
     mov al,buffer[esi]
     mov kBuffer[edi],al
     inc esi             ; point to next byte
     loop    L1
-
     popad
     ret
 DealKey ENDP

@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.30.30706.0	    04/07/22 00:25:34
+Microsoft (R) Macro Assembler Version 14.30.30706.0	    04/07/22 15:14:04
 Fibonacci Number.asm					     Page 1 - 1
 
 
@@ -59,8 +59,8 @@ Fibonacci Number.asm					     Page 1 - 1
  00000000			main PROC
  00000000  E8 00000020		    call    InputTheString      ; input the plain text
  00000005  E8 00000041		    call    InputTheKey      ; input the key
- 0000000A  E8 00000083		    call    DealKey
- 0000000F  E8 000000A1		    call    TranslateBuffer ; encrypt the buffer
+ 0000000A  E8 0000008A		    call    DealKey
+ 0000000F  E8 000000AE		    call    TranslateBuffer ; encrypt the buffer
  00000014  BA 00000027 R	    mov edx,OFFSET sEncrypt ; display encrypted message
  00000019  E8 00000053		    call    DisplayMessage
 
@@ -123,54 +123,56 @@ Fibonacci Number.asm					     Page 1 - 1
  00000082			L2:
  00000082  8A 86 0000004C R	    mov al,buffer[esi]   ; display the buffer
  00000088  E8 00000000 E	    call    WriteHex
- 0000008D  46			    inc esi
- 0000008E  E2 F2		    loop L2
+ 0000008D  B0 20		    mov  al,' '
+ 0000008F  E8 00000000 E	    call WriteChar
+ 00000094  46			    inc esi
+ 00000095  E2 EB		    loop L2
 
- 00000090  61			    popad
- 00000091  C3			    ret
- 00000092			DisplayMessage ENDP
+ 00000097  61			    popad
+ 00000098  C3			    ret
+ 00000099			DisplayMessage ENDP
 
 				;-----------------------------------------------------
- 00000092			DealKey PROC
+ 00000099			DealKey PROC
 				;
 				;-----------------------------------------------------
- 00000092  60			    pushad
- 00000093  8B 0D 0000014E R	    mov ecx,bufSize     ; loop counter
- 00000099  BE 00000000		    mov esi,0           ; index 0 in buffer
- 0000009E  8B 3D 00000152 R	    mov edi,keySize
- 000000A4			L1: 
- 000000A4  8A 86 0000004C R	    mov al,buffer[esi]
- 000000AA  88 87 000000CD R	    mov kBuffer[edi],al
- 000000B0  46			    inc esi             ; point to next byte
- 000000B1  E2 F1		    loop    L1
-
- 000000B3  61			    popad
- 000000B4  C3			    ret
- 000000B5			DealKey ENDP
+ 00000099  60			    pushad
+ 0000009A  8B 0D 0000014E R	    mov ecx,bufSize     ; loop counter
+ 000000A0  BE 00000000		    mov esi,0           ; index 0 in buffer
+ 000000A5  8B 3D 00000152 R	    mov edi,keySize
+ 000000AB  2B 0D 00000152 R	    sub ecx,keySize
+ 000000B1			L1: 
+ 000000B1  8A 86 0000004C R	    mov al,buffer[esi]
+ 000000B7  88 87 000000CD R	    mov kBuffer[edi],al
+ 000000BD  46			    inc esi             ; point to next byte
+ 000000BE  E2 F1		    loop    L1
+ 000000C0  61			    popad
+ 000000C1  C3			    ret
+ 000000C2			DealKey ENDP
 
 
 				;-----------------------------------------------------
- 000000B5			TranslateBuffer PROC
+ 000000C2			TranslateBuffer PROC
 				;
 				; Translates the string by exclusive-ORing each
 				; byte with the encryption key byte.
 				; Receives: nothing
 				; Returns: nothing
 				;-----------------------------------------------------
- 000000B5  60			    pushad
- 000000B6  8B 0D 0000014E R	    mov ecx,bufSize     ; loop counter
- 000000BC  BE 00000000		    mov esi,0           ; index 0 in buffer
- 000000C1			L1: 
- 000000C1  8A 86 000000CD R	    mov al,Kbuffer[esi]
- 000000C7  30 86 0000004C R	    xor buffer[esi],al ; translate a byte
- 000000CD  46			    inc esi             ; point to next byte
- 000000CE  E2 F1		    loop    L1
+ 000000C2  60			    pushad
+ 000000C3  8B 0D 0000014E R	    mov ecx,bufSize     ; loop counter
+ 000000C9  BE 00000000		    mov esi,0           ; index 0 in buffer
+ 000000CE			L1: 
+ 000000CE  8A 86 000000CD R	    mov al,Kbuffer[esi]
+ 000000D4  30 86 0000004C R	    xor buffer[esi],al ; translate a byte
+ 000000DA  46			    inc esi             ; point to next byte
+ 000000DB  E2 F1		    loop    L1
 
- 000000D0  61			    popad
- 000000D1  C3			    ret
- 000000D2			TranslateBuffer ENDP
+ 000000DD  61			    popad
+ 000000DE  C3			    ret
+ 000000DF			TranslateBuffer ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.30.30706.0	    04/07/22 00:25:34
+Microsoft (R) Macro Assembler Version 14.30.30706.0	    04/07/22 15:14:04
 Fibonacci Number.asm					     Symbols 2 - 1
 
 
@@ -265,7 +267,7 @@ Segments and Groups:
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
 _DATA  . . . . . . . . . . . . .	32 Bit	 00000156 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 000000D2 Para	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000000DF Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -278,10 +280,10 @@ Clrscr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 CreateFileA  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 CreateOutputFile . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Crlf . . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-DealKey  . . . . . . . . . . . .	P Near	 00000092 _TEXT	Length= 00000023 Public STDCALL
-  L1 . . . . . . . . . . . . . .	L Near	 000000A4 _TEXT	
+DealKey  . . . . . . . . . . . .	P Near	 00000099 _TEXT	Length= 00000029 Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 000000B1 _TEXT	
 Delay  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-DisplayMessage . . . . . . . . .	P Near	 00000071 _TEXT	Length= 00000021 Public STDCALL
+DisplayMessage . . . . . . . . .	P Near	 00000071 _TEXT	Length= 00000028 Public STDCALL
   L2 . . . . . . . . . . . . . .	L Near	 00000082 _TEXT	
 DumpMem  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 DumpRegs . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -360,8 +362,8 @@ Str_length . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 Str_trim . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Str_ucase  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SystemTimeToFileTime . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-TranslateBuffer  . . . . . . . .	P Near	 000000B5 _TEXT	Length= 0000001D Public STDCALL
-  L1 . . . . . . . . . . . . . .	L Near	 000000C1 _TEXT	
+TranslateBuffer  . . . . . . . .	P Near	 000000C2 _TEXT	Length= 0000001D Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 000000CE _TEXT	
 WaitMsg  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteBinB  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteBin . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
